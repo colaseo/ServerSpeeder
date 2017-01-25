@@ -5,7 +5,7 @@ export PATH
 clear
 if [ ! -d "/serverspeeder" ]; then
   echo "You didn't Install ServerSpeeder"
-  echo "Please Install ..."
+  echo "Please Install and Restart this program..."
 fi
 
 clear
@@ -92,7 +92,7 @@ echo "MEMINFO:"
 echo 
 free -m
 echo "Please Input Mem Free:"
-echo "For Exmple:"
+echo "For Exmaple:"
 echo "IF YOUR MEMINFO just like this:"
 meminfo233="             
 total       used       free     shared    buffers     cached
@@ -102,11 +102,18 @@ echo "$meminfo233"
 echo "Mem free is 560"
 echo "SO , Here in put 550"
 memshiji="512"
-read -p "Input MEM FREE(default 512): " memshiji
+# Changed On January 25th 2017.
+# Fix write default Error
+# Can't write default
+read -p "Input MEM FREE : " memshiji
 memserverspeeder2=$[$memshiji*8]
 memserverspeederall=`echo $memshiji $memserverspeeder2`
-sed -i "s/l2wQLimit="256 2048"\"/l2wQLimit=\"$memserverspeederall\"/g" /serverspeeder/etc/config
-sed -i "s/w2lQLimit="256 2048"\"/w2lQLimit=\"$memserverspeederall\"/g" /serverspeeder/etc/config
+
+# Changed On January 25th 2017.
+# Fix Bug Number
+# http://blog.csdn.net/wengyupeng/article/details/51840394
+sed -i "s/"\"l2lQLimit="256 2048\"/\"l2lQLimit=$memserverspeederall\""/g" /serverspeeder/etc/config
+sed -i "s/"\"w2lQLimit="256 2048\"/\"w2lQLimit=$memserverspeederall\""/g" /serverspeeder/etc/config
 sed -i "s/initialCwndWan="22"\"/initialCwndWan=\"650\"/g" /serverspeeder/etc/config
 bash /serverspeeder/bin/serverSpeeder.sh reload
 bash /serverspeeder/bin/serverSpeeder.sh restart
